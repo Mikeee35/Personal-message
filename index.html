@@ -77,7 +77,7 @@
 <body>
     <canvas id="canvas"></canvas>
     <div id="contenido" class="hidden">
-        <h1>Hola mi niña, te recomiendo verlo en la tablet en el cel se ve, pero no pude mejorarlo.</h1>
+        <h1>Hola una vez más, te recomiendo verlo en la ipad en el cel se ve, pero no pude mejorarlo.</h1>
         <p>La realidad es que no tengo idea de si esto sera lo ultimo de mi parte, te soy honesto.</p>
         <p>Realmente te extraño demasiado. Sé que en muchos momentos con mis acciones te hice daño, aunque nunca tuve esas intenciones, pero lo reconozco. 
             También estoy bastante consciente de que me equivoqué en muchas cosas, de las cuales me arrepentí en su momento y lo sigo estando. 
@@ -123,12 +123,12 @@
     <script src="https://unpkg.com/js-sha1@0.6.0/build/sha1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Hash de la contraseña (reemplaza con el hash de tu contraseña)
-        const hashCorrecto = "1f3cfa9c35d1b4447821da901a18c4c5787a6b0f"; // Ejemplo para "nuevaContraseña456"
+        // Hash
+        const hashCorrecto = "1f3cfa9c35d1b4447821da901a18c4c5787a6b0f"; // IDK THO
 
         // Pide la contraseña y verifica el hash
-        const contraseñaIngresada = prompt("Ingresa la contraseña para ver el mensaje:");
-        const hashIngresado = sha1(contraseñaIngresada); // Calcula el hash de la entrada
+        const contraseñaIngresada = prompt("Ingresa la contraseña, es una fecha mes/dia/año:");
+        const hashIngresado = sha1(contraseñaIngresada); // Calcula el hash 
         if (hashIngresado === hashCorrecto) {
             document.getElementById("contenido").classList.remove("hidden");
         } else {
