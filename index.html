@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensaje Personal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1a1a1a;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1; /* Fondo detrás del contenido */
+        }
+        #contenido {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            text-align: center;
+            max-width: 600px;
+            z-index: 1;
+        }
+        #contenido.hidden {
+            display: none;
+        }
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <div id="contenido" class="hidden">
+        <h1>Hola [Nombre de ella],</h1>
+        <p>Aquí van mis últimas palabras para ti. [Escribe tu mensaje personal aquí. Puedes agregar más párrafos o incluso una imagen.]</p>
+        <p>Con cariño, [Tu nombre]</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        // Contraseña (cámbiala por una única que le dirás a ella)
+        const contraseñaCorrecta = "miContraseñaSecreta123";
+
+        // Pide la contraseña
+        const contraseñaIngresada = prompt("Ingresa la contraseña para ver el mensaje:");
+        if (contraseñaIngresada === contraseñaCorrecta) {
+            document.getElementById("contenido").classList.remove("hidden");
+        } else {
+            document.body.innerHTML = "<h1>Acceso Denegado</h1><p>Solo la persona autorizada puede ver esto.</p>";
+        }
+
+        // Animación 3D con Three.js
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("canvas"), alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        // Esfera
+        const geometry = new THREE.SphereGeometry(2, 32, 32);
+        const material = new THREE.MeshPhongMaterial({ color: 0x00ffcc, shininess: 100 });
+        const sphere = new THREE.Mesh(geometry, material);
+        scene.add(sphere);
+
+        // Luz
+        const light = new THREE.PointLight(0xffffff, 1, 100);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x404040));
+
+        camera.position.z = 5;
+
+        // Animación
+        function animate() {
+            requestAnimationFrame(animate);
+            sphere.rotation.x += 0.01;
+            sphere.rotation.y += 0.01;
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Responsivo
+        window.addEventListener("resize", () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
