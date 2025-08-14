@@ -133,7 +133,7 @@
         const hashCorrecto = "1f3cfa9c35d1b4447821da901a18c4c5787a6b0f"; // IDK THO
 
         // Pide la contraseña y verifica el hash
-        const contraseñaIngresada = prompt("Ingresa la contraseña, es una fecha mes/dia/año:");
+        const contraseñaIngresada = prompt("Esa fecha de esta manera, mes/dia/año:");
         const hashIngresado = sha1(contraseñaIngresada); // Calcula el hash 
         if (hashIngresado === hashCorrecto) {
             document.getElementById("contenido").classList.remove("hidden");
