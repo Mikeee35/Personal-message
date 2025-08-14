@@ -107,35 +107,46 @@
             document.body.innerHTML = "<h1>Acceso Denegado</h1><p>Solo la persona autorizada puede ver esto.</p>";
         }
 
-       // Animación 3D con Three.js - Corazón 3D
+       // Animación 3D con Three.js - Corazón roto
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("canvas"), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
 
-        // Crear forma de corazón (usando curvas Bezier de Three.js docs)
-        const heartShape = new THREE.Shape();
-        heartShape.moveTo(0, 0.5);
-        heartShape.bezierCurveTo(0, 0.5, -0.5, 1, -1, 1);
-        heartShape.bezierCurveTo(-1.5, 1, -1.5, 0.5, -1.5, 0.5);
-        heartShape.bezierCurveTo(-1.5, -0.5, -0.5, -1.5, 0, -2);
-        heartShape.bezierCurveTo(0.5, -1.5, 1.5, -0.5, 1.5, 0.5);
-        heartShape.bezierCurveTo(1.5, 0.5, 1.5, 1, 1, 1);
-        heartShape.bezierCurveTo(0.5, 1, 0, 0.5, 0, 0.5);
+        // Mitad izquierda del corazón
+        const leftHeartShape = new THREE.Shape();
+        leftHeartShape.moveTo(0, 0.5);
+        leftHeartShape.bezierCurveTo(0, 0.5, -0.5, 1, -1, 1);
+        leftHeartShape.bezierCurveTo(-1.5, 1, -1.5, 0.5, -1.5, 0.5);
+        leftHeartShape.bezierCurveTo(-1.5, -0.5, -0.5, -1.5, 0, -2);
 
-        // Extrudir para hacer 3D
+        // Mitad derecha del corazón
+        const rightHeartShape = new THREE.Shape();
+        rightHeartShape.moveTo(0, -2);
+        rightHeartShape.bezierCurveTo(0.5, -1.5, 1.5, -0.5, 1.5, 0.5);
+        rightHeartShape.bezierCurveTo(1.5, 0.5, 1.5, 1, 1, 1);
+        rightHeartShape.bezierCurveTo(0.5, 1, 0, 0.5, 0, 0.5);
+
+        // Extrudir ambas mitades
         const extrudeSettings = {
             steps: 2,
-            depth: 0.2, // Grosor del corazón
+            depth: 0.2,
             bevelEnabled: true,
             bevelThickness: 0.1,
             bevelSize: 0.1,
             bevelSegments: 2
         };
-        const geometry = new THREE.ExtrudeGeometry(heartShape, extrudeSettings);
-        const material = new THREE.MeshPhongMaterial({ color: 0xff69b4, shininess: 100 }); // Rosa brillante
-        const heart = new THREE.Mesh(geometry, material);
-        scene.add(heart);
+        const leftGeometry = new THREE.ExtrudeGeometry(leftHeartShape, extrudeSettings);
+        const rightGeometry = new THREE.ExtrudeGeometry(rightHeartShape, extrudeSettings);
+        const material = new THREE.MeshPhongMaterial({ color: 0x8B0000, shininess: 100 }); // Rojo oscuro
+
+        // Crear meshes y desplazarlas para simular ruptura
+        const leftHeart = new THREE.Mesh(leftGeometry, material);
+        leftHeart.position.x = -0.2; // Mover izquierda
+        const rightHeart = new THREE.Mesh(rightGeometry, material);
+        rightHeart.position.x = 0.2; // Mover derecha
+        scene.add(leftHeart);
+        scene.add(rightHeart);
 
         // Luces para visibilidad
         const light = new THREE.PointLight(0xffffff, 1.5, 100);
@@ -144,13 +155,15 @@
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
 
-        camera.position.z = 3; // Acercar cámara para ver el corazón
+        camera.position.z = 3;
 
         // Animación
         function animate() {
             requestAnimationFrame(animate);
-            heart.rotation.x += 0.005;
-            heart.rotation.y += 0.005;
+            leftHeart.rotation.x += 0.005;
+            leftHeart.rotation.y += 0.005;
+            rightHeart.rotation.x += 0.005;
+            rightHeart.rotation.y += 0.005;
             renderer.render(scene, camera);
         }
         animate();
