@@ -97,11 +97,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         // Contraseña (cámbiala por una única que le dirás a ella)
-        const contraseñaCorrecta = "2021";
+        const hashCorrecto = "1f3cfa9c35d1b4447821da901a18c4c5787a6b0f";
 
         // Pide la contraseña
-        const contraseñaIngresada = prompt("Ingresa la contraseña, es una fecha especial para ambos:");
-        if (contraseñaIngresada === contraseñaCorrecta) {
+        const contraseñaIngresada = prompt("Ingresa la contraseña, es una fecha especial para ambos mes/dia/año:");
+        const hashIngresado = sha1(contraseñaIngresada); // Calcula el hash for the entry
+        if (hashIngresado === hashCorrecto) {
             document.getElementById("contenido").classList.remove("hidden");
         } else {
             document.body.innerHTML = "<h1>Acceso Denegado</h1><p>Solo la persona autorizada puede ver esto.</p>";
