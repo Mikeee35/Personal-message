@@ -48,9 +48,29 @@
             line-height: 1.6;
             margin-bottom: 20px;
         }
+        button {
+            background: linear-gradient(to right, #ff69b4, #e55a9f);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2em;
+            margin-top: 20px;
+            box-shadow: 0 0 10px rgba(255, 105, 180, 0.7);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 105, 180, 1);
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
         }
     </style>
 </head>
@@ -97,16 +117,18 @@
         <p>Las relaciones perfectas no existen, porque tampoco hay personas perfectas. La nuestra tenía de todo un poco y, por lo menos a mí, me encantaba estar en ella y cómo éramos el uno al otro.
             Estoy tratando de hacer el acto de amor más grande, que es el de aceptar y dejarte ir, o eso dicen, pero la realidad es que no sé cómo hacerlo. Puedo estar bien por el día, pero a la hora de la soledad llegas tú y no te vas en toda la noche.
         </p>
+        <button onclick="closeMessage()">Mira esto otro</button>
     </div>
 
+    <script src="https://unpkg.com/js-sha1@0.6.0/build/sha1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Contraseña (cámbiala por una única que le dirás a ella)
-        const hashCorrecto = "1f3cfa9c35d1b4447821da901a18c4c5787a6b0f";
+        // Hash de la contraseña (reemplaza con el hash de tu contraseña)
+        const hashCorrecto = "1f3cfa9c35d1b4447821da901a18c4c5787a6b0f"; // Ejemplo para "nuevaContraseña456"
 
-        // Pide la contraseña
-        const contraseñaIngresada = prompt("Ingresa la contraseña, es una fecha especial para ambos mes/dia/año:");
-        const hashIngresado = sha1(contraseñaIngresada); // Calcula el hash for the entry
+        // Pide la contraseña y verifica el hash
+        const contraseñaIngresada = prompt("Ingresa la contraseña para ver el mensaje:");
+        const hashIngresado = sha1(contraseñaIngresada); // Calcula el hash de la entrada
         if (hashIngresado === hashCorrecto) {
             document.getElementById("contenido").classList.remove("hidden");
         } else {
@@ -180,6 +202,15 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
+
+        // Cerrar mensaje
+        function closeMessage() {
+            const contenido = document.getElementById("contenido");
+            contenido.style.animation = "fadeOut 1s ease-in-out";
+            setTimeout(() => {
+                window.location.href = "https://mikeee35.github.io/Flores/"; // Redirige a final.html
+            }, 1000);
+        }
     </script>
 </body>
 </html>
