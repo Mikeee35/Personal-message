@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mensaje Personal</title>
+    <title>Mensaje para ti</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -47,9 +47,10 @@
 <body>
     <canvas id="canvas"></canvas>
     <div id="contenido" class="hidden">
-        <h1>Hola [Nombre de ella],</h1>
+        <h1>Hola mi niña,</h1>
         <p>Aquí van mis últimas palabras para ti. [Escribe tu mensaje personal aquí. Puedes agregar más párrafos o incluso una imagen.]</p>
         <p>Con cariño, [Tu nombre]</p>
+        <p> Otros</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -58,7 +59,7 @@
         const contraseñaCorrecta = "2021";
 
         // Pide la contraseña
-        const contraseñaIngresada = prompt("Ingresa la contraseña para ver el mensaje:");
+        const contraseñaIngresada = prompt("Ingresa la contraseña, es una fecha especial para ambos:");
         if (contraseñaIngresada === contraseñaCorrecta) {
             document.getElementById("contenido").classList.remove("hidden");
         } else {
