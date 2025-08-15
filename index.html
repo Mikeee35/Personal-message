@@ -213,6 +213,35 @@
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("canvas"), alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        // ===== Escarcha / partículas flotando =====
+        const particlesCount = 500;
+        const positions = [];
+        for (let i = 0; i < particlesCount; i++) {
+        positions.push(
+            (Math.random() - 0.5) * 10,  // x
+            (Math.random() - 0.5) * 10,  // y
+            (Math.random() - 0.5) * 10   // z
+        );
+        }
+
+        const particlesGeometry = new THREE.BufferGeometry();
+        particlesGeometry.setAttribute(
+        'position',
+        new THREE.Float32BufferAttribute(positions, 3)
+        );
+
+        const particlesMaterial = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.05,
+        transparent: true,
+        opacity: 0.8,
+        map: new THREE.TextureLoader().load('https://threejs.org/examples/textures/sprites/spark1.png'),
+        blending: THREE.AdditiveBlending,
+        depthWrite: false
+        });
+
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
 
         // Mitad izquierda del corazón
         const leftHeartShape = new THREE.Shape();
@@ -265,6 +294,9 @@
             leftHeart.rotation.y += 0.005;
             rightHeart.rotation.x += 0.005;
             rightHeart.rotation.y += 0.005;
+               // Animar partículas
+            particles.rotation.y += 0.0008;
+            particles.rotation.x += 0.0005;
             renderer.render(scene, camera);
         }
         animate();
