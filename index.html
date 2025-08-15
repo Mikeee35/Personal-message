@@ -72,10 +72,54 @@
             from { opacity: 1; }
             to { opacity: 0; }
         }
+             /* ===== Overlay ===== */
+        .overlay {
+        position: fixed; inset: 0;
+        display: grid; place-items: center;
+        background: rgba(0,0,0,0.55);
+        z-index: 2;
+        padding: 16px;
+        backdrop-filter: blur(2px);
+        }
+        .panel {
+        background: #0e0e1e;
+        border: 1px solid rgba(255,255,255,0.12);
+        border-radius: 14px;
+        width: min(92vw, 420px);
+        padding: 18px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        animation: fadeIn 300ms ease-out both;
+        }
+        .panel h2 { margin: 0 0 8px; font-size: 1.25rem; color: #fff; }
+        .panel p { margin: 0 0 16px; font-size: 1rem; opacity: 0.9; }
+        .field { display: grid; gap: 8px; margin-bottom: 6px; }
+        .row { display: flex; gap: 8px; align-items: center; }
+        .error { color: #ffb3c9; font-size: 0.95rem; min-height: 1.2em; }
+        .panel input[type="password"], .panel input[type="text"] {
+        width: 100%; padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,0.15);
+        background: #141432; color: #fff;
+        font-size: 1rem;
+        }
     </style>
 </head>
 <body>
     <canvas id="canvas"></canvas>
+        <!-- Overlay de acceso con hash -->
+    <div id="gate" class="overlay" role="dialog" aria-labelledby="gate-title" aria-modal="true">
+    <div class="panel">
+        <h2 id="gate-title">Acceso</h2>
+        <p>Esa fecha de esta manera, <strong>mes/dia/año</strong>:</p>
+        <form id="gate-form" class="field" autocomplete="off">
+        <input id="secret" name="secret" type="password" inputmode="text" placeholder="mm/dd/aaaa" required />
+        <div class="row">
+            <button id="enter" type="submit">Entrar</button>
+        </div>
+        <div id="err" class="error" aria-live="polite"></div>
+        </form>
+    </div>
+    </div>
     <div id="contenido" class="hidden">
         <h1>Hola una vez más, te recomiendo verlo en la ipad en el cel se ve, pero algo incomodo, no pude mejorarlo.</h1>
         <p> La realidad es que no tengo idea de si esto sera lo ultimo de mi parte, te soy honesto.</p>
@@ -134,17 +178,35 @@
     <script src="https://unpkg.com/js-sha1@0.6.0/build/sha1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Hash
-        const hashCorrecto = "1f3cfa9c35d1b4447821da901a18c4c5787a6b0f"; // IDK THO
+                // Hash
+        const hashCorrecto = "1f3cfa9c35d1b4447821da901a18c4c5787a6b0f"; // IDK
 
-        // Pide la contraseña y verifica el hash
-        const contraseñaIngresada = prompt("Esa fecha de esta manera, mes/dia/año:");
-        const hashIngresado = sha1(contraseñaIngresada); // Calcula el hash 
-        if (hashIngresado === hashCorrecto) {
-            document.getElementById("contenido").classList.remove("hidden");
-        } else {
-            document.body.innerHTML = "<h1>Acceso Denegado</h1><p>Solo la persona autorizada puede ver esto.</p>";
+        // Overlay con validación por hash
+        const gate = document.getElementById('gate');
+        const gateForm = document.getElementById('gate-form');
+        const gateInput = document.getElementById('secret');
+        const contenido = document.getElementById('contenido');
+        const err = document.getElementById('err');
+
+        window.addEventListener('DOMContentLoaded', () => {
+        gateInput.focus();
+        });
+
+        gateForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const valor = gateInput.value.trim();
+        if (!valor) {
+            err.textContent = 'Ingresa la fecha.';
+            return;
         }
+        const hashIngresado = sha1(valor);
+        if (hashIngresado === hashCorrecto) {
+            gate.style.display = 'none';
+            contenido.classList.remove('hidden');
+        } else {
+            err.textContent = 'Acceso denegado. Solo la persona autorizada puede ver esto.';
+        }
+        });
 
        // Animación 3D con Three.js - Corazón roto
         const scene = new THREE.Scene();
